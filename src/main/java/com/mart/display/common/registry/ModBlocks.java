@@ -28,6 +28,7 @@ public class ModBlocks {
         displays.add("gold_display");
         displays.add("diamond_display");
         displays.add("obsidian_display");
+        displays.add("quartz_display");
 
         for(String registryName : displays){
             displayBlocks.add(register(new BlockDisplay(registryName), event));

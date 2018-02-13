@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "0": "display:blocks/quartz",
+      "particle": "display:blocks/quartz"
+    },
+    "model": "display:display"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}
