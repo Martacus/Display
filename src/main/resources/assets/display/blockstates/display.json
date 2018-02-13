@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "0": "display:blocks/stone",
+      "layer0": "display:blocks/stone",
+      "particle": "display:blocks/stone"
+    },
+    "model": "display:display"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

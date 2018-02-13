@@ -1,0 +1,12 @@
+[{
+  "modid": "display",
+  "name": "Display",
+  "description": "Display Items",
+  "version": "1.0",
+  "mcversion": "1.12.2",
+  "logoFile": "",
+  "url": "",
+  "updateJSON": "",
+  "authorList": ["Martacus"],
+  "credits": "Martacus made dis. And notawallplan2 made the Display design."
+}]
