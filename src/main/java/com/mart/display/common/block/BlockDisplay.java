@@ -33,17 +33,6 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
     }
 
     @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileDisplay tileEntity = (TileDisplay) world.getTileEntity(pos);
 
@@ -67,6 +56,8 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileDisplay tileEntity = (TileDisplay) world.getTileEntity(pos);
         ItemStack heldItem = player.getHeldItem(hand);
+
+        System.out.println(facing.toString());
 
         if (world.isRemote || tileEntity == null) {
             return true;
@@ -97,5 +88,57 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return displayAabb;
+    }
+
+
+    @Override
+    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+        return false;
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+        return false;
+    }
+
+    @Override
+    @Deprecated
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        switch(face){
+            case UP:
+                return false;
+            case DOWN:
+                return false;
+            case EAST:
+                return false;
+            case NORTH:
+                return false;
+            case SOUTH:
+                return false;
+            case WEST:
+                return false;
+            default:
+                return false;
+        }
     }
 }
