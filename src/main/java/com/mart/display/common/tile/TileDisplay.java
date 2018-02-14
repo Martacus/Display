@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 
@@ -11,6 +12,7 @@ public class TileDisplay extends TileBase implements ITickable {
 
     private ItemStack itemStack = ItemStack.EMPTY;
     private boolean rotation;
+    private int rotationDegrees = 0;
 
     public TileDisplay(){
         this.rotation = true;
@@ -53,6 +55,7 @@ public class TileDisplay extends TileBase implements ITickable {
         super.writeToNBT(compound);
 
         compound.setBoolean("rotation", this.rotation);
+        compound.setInteger("rotationDegrees", this.rotationDegrees);
 
         NBTTagList tagList = new NBTTagList();
         NBTTagCompound itemCompound = new NBTTagCompound();
@@ -68,6 +71,7 @@ public class TileDisplay extends TileBase implements ITickable {
         super.readFromNBT(compound);
 
         this.rotation = compound.getBoolean("rotation");
+        this.rotationDegrees = compound.getInteger("rotationDegrees");
 
         NBTTagList tagList = (NBTTagList) compound.getTag("item");
         NBTTagCompound tagCompound = tagList.getCompoundTagAt(0);
@@ -78,11 +82,27 @@ public class TileDisplay extends TileBase implements ITickable {
         return itemStack;
     }
 
-    public void toggleRotation() {
+    public void toggleRotation(EnumFacing facing) {
         rotation = !rotation;
+
+        switch (facing){
+            case EAST:
+                this.rotationDegrees = 90;
+                break;
+            case WEST:
+                this.rotationDegrees = 90;
+                break;
+            default:
+                this.rotationDegrees = 0;
+                break;
+        }
     }
 
     public boolean isRotation() {
         return rotation;
+     }
+
+    public int getRotationDegrees() {
+        return rotationDegrees;
     }
 }

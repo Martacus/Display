@@ -1,9 +1,9 @@
 package com.mart.display.common.block;
 
 import com.mart.display.common.tile.TileDisplay;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockDisplay extends BlockBase implements ITileEntityProvider{
+public class BlockDisplay extends BlockBase{
 
     private final AxisAlignedBB displayAabb = new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.45D, 0.8D);
 
@@ -64,7 +64,7 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
         }
 
         if (player.isSneaking()){
-            tileEntity.toggleRotation();
+            tileEntity.toggleRotation(facing);
             return true;
         }
 
@@ -79,9 +79,14 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
         return true;
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileDisplay();
     }
 
@@ -90,14 +95,8 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
         return displayAabb;
     }
 
-
     @Override
-    public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        return false;
-    }
-
-    @Override
-    public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -108,37 +107,7 @@ public class BlockDisplay extends BlockBase implements ITileEntityProvider{
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canBeReplacedByLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-        switch(face){
-            case UP:
-                return false;
-            case DOWN:
-                return false;
-            case EAST:
-                return false;
-            case NORTH:
-                return false;
-            case SOUTH:
-                return false;
-            case WEST:
-                return false;
-            default:
-                return false;
-        }
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
     }
 }
