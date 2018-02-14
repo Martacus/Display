@@ -8,3 +8,5 @@ tile.gold_display.name=Golden Display
 tile.diamond_display.name=Diamond Display
 tile.obsidian_display.name=Obsidian Display
 tile.quartz_display.name=Quartz Display
+
+item.display_configurator.name=Display Configurator

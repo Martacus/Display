@@ -22,7 +22,7 @@ public class RenderDisplay extends TileEntitySpecialRenderer<TileDisplay> {
         }
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x + 0.5, y + 0.75, z + 0.5);
+        GlStateManager.translate(x + tileDisplay.getxAxisCoord(), y + tileDisplay.getyAxisCoord(), z + tileDisplay.getzAxisCoord());
 
         EntityItem entityitem = new EntityItem(tileDisplay.getWorld(), 0.0D, 0.0D, 0.0D, inputStack);
         entityitem.getItem().setCount(1);

@@ -1,6 +1,7 @@
 package com.mart.display.common;
 
 import com.mart.display.common.registry.ModBlocks;
+import com.mart.display.common.registry.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -26,5 +27,6 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         ModBlocks.initItemBlocks(event);
+        ModItems.init(event);
     }
 }

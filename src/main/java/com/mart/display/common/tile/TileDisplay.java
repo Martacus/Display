@@ -11,8 +11,13 @@ import net.minecraft.util.ITickable;
 public class TileDisplay extends TileBase implements ITickable {
 
     private ItemStack itemStack = ItemStack.EMPTY;
+
     private boolean rotation;
+
     private int rotationDegrees = 0;
+    private float xAxisCoord = 0.5f;
+    private float yAxisCoord = 0.75f;
+    private float zAxisCoord = 0.5f;
 
     public TileDisplay(){
         this.rotation = true;
@@ -56,6 +61,10 @@ public class TileDisplay extends TileBase implements ITickable {
 
         compound.setBoolean("rotation", this.rotation);
         compound.setInteger("rotationDegrees", this.rotationDegrees);
+        compound.setFloat("xAxisCoord", this.xAxisCoord);
+        compound.setFloat("yAxisCoord", this.yAxisCoord);
+        compound.setFloat("zAxisCoord", this.zAxisCoord);
+
 
         NBTTagList tagList = new NBTTagList();
         NBTTagCompound itemCompound = new NBTTagCompound();
@@ -72,6 +81,10 @@ public class TileDisplay extends TileBase implements ITickable {
 
         this.rotation = compound.getBoolean("rotation");
         this.rotationDegrees = compound.getInteger("rotationDegrees");
+
+        this.xAxisCoord = compound.getFloat("xAxisCoord");
+        this.yAxisCoord = compound.getFloat("yAxisCoord");
+        this.zAxisCoord = compound.getFloat("zAxisCoord");
 
         NBTTagList tagList = (NBTTagList) compound.getTag("item");
         NBTTagCompound tagCompound = tagList.getCompoundTagAt(0);
@@ -104,5 +117,44 @@ public class TileDisplay extends TileBase implements ITickable {
 
     public int getRotationDegrees() {
         return rotationDegrees;
+    }
+
+    public void moveItemXAxis() {
+        if(this.xAxisCoord >= 2.5f){
+            this.xAxisCoord = -1.5f;
+        }
+        else{
+            this.xAxisCoord += 0.1f;
+        }
+    }
+
+    public void moveItemYAxis() {
+        if(this.yAxisCoord >= 3){
+            this.yAxisCoord = 0.75f;
+        }
+        else{
+            this.yAxisCoord += 0.1f;
+        }
+    }
+
+    public void moveItemZAxis() {
+        if(this.zAxisCoord >= 2.5f){
+            this.zAxisCoord = -1.5f;
+        }
+        else{
+            this.zAxisCoord += 0.1f;
+        }
+    }
+
+    public float getxAxisCoord() {
+        return xAxisCoord;
+    }
+
+    public float getyAxisCoord() {
+        return yAxisCoord;
+    }
+
+    public float getzAxisCoord() {
+        return zAxisCoord;
     }
 }
