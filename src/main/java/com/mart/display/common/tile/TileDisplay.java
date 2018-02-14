@@ -7,10 +7,16 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class TileDisplay extends TileBase implements ITickable {
+import javax.annotation.Nullable;
 
-    private ItemStack itemStack = ItemStack.EMPTY;
+public class TileDisplay extends TileBase implements ITickable, ICapabilityProvider {
 
     private boolean rotation;
 
@@ -19,8 +25,11 @@ public class TileDisplay extends TileBase implements ITickable {
     private float yAxisCoord = 0.75f;
     private float zAxisCoord = 0.5f;
 
+    private ItemStackHandler itemStackHandler;
+
     public TileDisplay(){
         this.rotation = true;
+        this.itemStackHandler = new ItemStackHandler(1);
     }
 
     @Override
@@ -29,25 +38,24 @@ public class TileDisplay extends TileBase implements ITickable {
     }
 
     public void extractItem(EntityPlayer player) {
-        if (itemStack.isEmpty()) {
+        if (this.itemStackHandler.getStackInSlot(0).isEmpty()) {
             return;
         }
 
-        player.inventory.addItemStackToInventory(itemStack);
-        this.itemStack = ItemStack.EMPTY;
+        player.inventory.addItemStackToInventory(this.itemStackHandler.extractItem(0, 64, false));
 
         notifyUpdate();
     }
 
     public void setItem(ItemStack heldItem, EntityPlayer player, EnumHand hand) {
-        if (!itemStack.isEmpty()) {
+        if (!this.itemStackHandler.getStackInSlot(0).isEmpty()) {
             return;
         }
 
         ItemStack heldItem2 = heldItem.copy();
 
         heldItem2.setCount(1);
-        this.itemStack = heldItem2;
+        this.itemStackHandler.setStackInSlot(0, heldItem2);
 
         heldItem.setCount(heldItem.getCount() - 1);
         player.setHeldItem(hand, heldItem);
@@ -65,12 +73,7 @@ public class TileDisplay extends TileBase implements ITickable {
         compound.setFloat("yAxisCoord", this.yAxisCoord);
         compound.setFloat("zAxisCoord", this.zAxisCoord);
 
-
-        NBTTagList tagList = new NBTTagList();
-        NBTTagCompound itemCompound = new NBTTagCompound();
-        this.itemStack.writeToNBT(itemCompound);
-        tagList.appendTag(itemCompound);
-        compound.setTag("item", tagList);
+        compound.setTag("itemStackHandler", this.itemStackHandler.serializeNBT());
 
         return compound;
     }
@@ -86,13 +89,11 @@ public class TileDisplay extends TileBase implements ITickable {
         this.yAxisCoord = compound.getFloat("yAxisCoord");
         this.zAxisCoord = compound.getFloat("zAxisCoord");
 
-        NBTTagList tagList = (NBTTagList) compound.getTag("item");
-        NBTTagCompound tagCompound = tagList.getCompoundTagAt(0);
-        this.itemStack = new ItemStack(tagCompound);
+        this.itemStackHandler.deserializeNBT(compound.getCompoundTag("itemStackHandler"));
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStackHandler.getStackInSlot(0);
     }
 
     public void toggleRotation(EnumFacing facing) {
@@ -157,4 +158,21 @@ public class TileDisplay extends TileBase implements ITickable {
     public float getzAxisCoord() {
         return zAxisCoord;
     }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return true;
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) this.itemStackHandler;
+        }
+        return super.getCapability(capability, facing);
+    }
+
 }

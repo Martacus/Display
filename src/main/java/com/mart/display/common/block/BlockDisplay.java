@@ -60,8 +60,6 @@ public class BlockDisplay extends BlockBase {
         TileDisplay tileEntity = (TileDisplay) world.getTileEntity(pos);
         ItemStack heldItem = player.getHeldItem(hand);
 
-        System.out.println(facing.toString());
-
         if (world.isRemote || tileEntity == null) {
             return true;
         }
