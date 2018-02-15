@@ -15,7 +15,6 @@ public class RenderDisplay extends TileEntitySpecialRenderer<TileDisplay> {
     @Override
     public void render(TileDisplay tileDisplay, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         ItemStack inputStack = tileDisplay.getItemStack();
-        RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
         if(inputStack.isEmpty()){
             return;
@@ -24,11 +23,6 @@ public class RenderDisplay extends TileEntitySpecialRenderer<TileDisplay> {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + tileDisplay.getxAxisCoord(), y + tileDisplay.getyAxisCoord(), z + tileDisplay.getzAxisCoord());
 
-        EntityItem entityitem = new EntityItem(tileDisplay.getWorld(), 0.0D, 0.0D, 0.0D, inputStack);
-        entityitem.getItem().setCount(1);
-        entityitem.hoverStart = 0.0F;
-
-        GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
 
         float rotation;
@@ -44,11 +38,12 @@ public class RenderDisplay extends TileEntitySpecialRenderer<TileDisplay> {
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
 
         RenderHelper.enableStandardItemLighting();
-        itemRenderer.renderItem(entityitem.getItem(), ItemCameraTransforms.TransformType.FIXED);
+        Minecraft.getMinecraft().getRenderItem().renderItem(inputStack, ItemCameraTransforms.TransformType.FIXED);
         RenderHelper.disableStandardItemLighting();
 
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
-        GlStateManager.popMatrix();
     }
+
+
 }
