@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
@@ -25,16 +26,16 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
     private float yAxisCoord = 0.75f;
     private float zAxisCoord = 0.5f;
 
-    private ItemStackHandler itemStackHandler;
+    private TileDisplayItemHandler itemStackHandler;
 
     public TileDisplay(){
         this.rotation = true;
-        this.itemStackHandler = new ItemStackHandler(1);
+        this.itemStackHandler = new TileDisplayItemHandler(this);
     }
 
     @Override
     public void update() {
-        notifyUpdate();
+
     }
 
     public void extractItem(EntityPlayer player) {
@@ -174,5 +175,21 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
         }
         return super.getCapability(capability, facing);
     }
+
+    public class TileDisplayItemHandler extends ItemStackHandler{
+
+       private final TileDisplay entity;
+
+       public TileDisplayItemHandler(TileDisplay entity){
+           super(1);
+           this.entity = entity;
+       }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            entity.notifyUpdate();
+        }
+    }
+
 
 }
