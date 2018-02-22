@@ -111,6 +111,10 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
                 this.rotationDegrees = 0;
                 break;
         }
+
+        if(!this.world.isRemote){
+            notifyUpdate();
+        }
     }
 
     public boolean isRotation() {
@@ -128,6 +132,10 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
         else{
             this.xAxisCoord += 0.1f;
         }
+
+        if(!this.world.isRemote){
+            notifyUpdate();
+        }
     }
 
     public void moveItemYAxis() {
@@ -137,6 +145,10 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
         else{
             this.yAxisCoord += 0.1f;
         }
+
+        if(!this.world.isRemote){
+            notifyUpdate();
+        }
     }
 
     public void moveItemZAxis() {
@@ -145,6 +157,10 @@ public class TileDisplay extends TileBase implements ITickable, ICapabilityProvi
         }
         else{
             this.zAxisCoord += 0.1f;
+        }
+
+        if(!this.world.isRemote){
+            notifyUpdate();
         }
     }
 

@@ -15,7 +15,7 @@ public class Display {
 
     public static final String MODID = "display";
     public static final String name = "Display";
-    public static final String VERSION = "1.2.2";
+    public static final String VERSION = "1.2.3";
 
     public static Logger logger;
 
